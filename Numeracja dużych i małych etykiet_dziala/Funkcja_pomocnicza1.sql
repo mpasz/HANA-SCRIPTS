@@ -1,0 +1,17 @@
+CREATE FUNCTION TEST_20161207.EP_GetPackQtyFromDockLine (IN WZ INT , IN LINE INT)
+RETURNS TABLE
+(
+	"PackQty" INT
+)
+LANGUAGE SQLSCRIPT
+AS
+BEGIN RETURN
+	SELECT	
+		T1."PackQty" AS "PackQty"
+	FROM ODLN T0
+			INNER JOIN DLN1 T1 ON T0."DocEntry" = T1."DocEntry"
+			INNER JOIN OITM T2 ON T1."ItemCode" = T2."ItemCode"
+	WHERE T0."DocEntry" =:WZ 
+          AND T1."LineNum" = :LINE
+          AND T2."ItmsGrpCod" NOT IN (157,160);
+END;
