@@ -1,4 +1,4 @@
-ALTER procedure ct_numeracja_etykiet_malych_lpoj_test (in wz int)
+﻿CREATE procedure EP_NumeracjaEtykietMalychLPoj(in wz int)
 
 language sqlscript  
 as
@@ -147,16 +147,16 @@ FROM ep_bigboxqty (:wz);
                                         WHERE t0."DocEntry" =:wz 
                                                 and t1."LineNum" = :_line
                                                 and t2."ItmsGrpCod" not in (157,160)
-                                    ) g0,
+                                    ) g0
                          
 
-                                    (
-                                    select top 1000 --tabela wykorzystywana do wybrania odpowiedniej ilości linii
-                                        row_number()over() as "Licznik"
-                                        from oitm
-                                    ) g1
+                        --            (
+                        --            select top 1000 --tabela wykorzystywana do wybrania odpowiedniej ilości linii
+                        --               row_number()over() as "Licznik"
+                        --                from oitm
+                        --            ) g1
 
-                                where 1 >= g1."Licznik" --warunek wybrania odpowiedniej ilości linii
+                        --        where 1 >= g1."Licznik" --warunek wybrania odpowiedniej ilości linii
                                 order by "LineNum"
                             ) h0
                                 inner join 
@@ -181,12 +181,12 @@ FROM ep_bigboxqty (:wz);
                                                     and t2."ItmsGrpCod" not in (157,160)  
                                                     and t4."U_PackType" like '%ojemn%'
 
-                                    ) g0,
+                                    ) g0
 
-                      (select top 1000
-                        row_number()over() as "Licznik" --tabela wykorzystywana do wybrania odpowiedniej ilości linii
-                       from oitm) g1
-                     where 1 >= g1."Licznik" --warunek wybrania odpowiedniej ilości linii
+                    --  (select top 1000
+                   --     row_number()over() as "Licznik" --tabela wykorzystywana do wybrania odpowiedniej ilości linii
+                   --    from oitm) g1
+                  --   where 1 >= g1."Licznik" --warunek wybrania odpowiedniej ilości linii
                      order by "LineNum") h1 on h0."DocEntry" = h1."DocEntry" and h0."LineNum" = h1."LineNum";
                      
               IF (:j = :_smallBoxeQtyPerPalette -1) then 
